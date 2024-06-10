@@ -64,18 +64,4 @@ class ProductManager {
 }
     }
 
-// Ejemplo de uso
-const productManager = new ProductManager();
-
-productManager.addProduct("kit accesorios", "Description 1", 20000, "../img/kit accesorios auto.webp", 1, 30);
-productManager.addProduct("moldura para interior", "Description 2", 4500, "../img/moldura para interior.webp", 2, 30);
-
-const allProducts = productManager.getProducts();
-console.log(allProducts);
-
-const productToUpdate = productManager.getProductById(1);
-if (productToUpdate) {
-    productManager.updateProduct(1, { ...productToUpdate, price: 120 });
-}
-
 export default ProductManager;
