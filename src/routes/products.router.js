@@ -1,74 +1,73 @@
 import { Router } from "express";
-import ProductManager from "../managers/productManager.js";
+import ProductManager from "../managers/ProductsManager";
 
 const router = Router();
+/*
+router.get("/", (req, res) => {
+    res.send({ title: "Hola" });
+});*/
 
-const PM = new ProductManager();
 
-router.get("/", async (req, res) => {
-  let limit = +req.query.limit;
-  const products = await PM.getProducts(limit);
-  res.render("home", {
-    style: "index.css",
-    products: products,
-    layout: "products",
-  });
+const productManager = new ProductManager();
+
+router.get("/", (req, res) => { // endpoint
+    const products = productManager.getAllProducts();
+    res.status(200).send({ data: products});
 });
 
-router.get("/:productId", async (req, res) => {
-  let productId = +req.params.productId;
-  let product = await PM.getProductById(productId);
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await productManager.getProductById(Number(id));
 
   if (!product) {
-    return res.send({ error: "Producto no encontrado" });
+    return res.status(404).send({ error: "No se encontro ningun producto con ese id" });
   }
-  res.send({ product });
+  res.status(200).send({ data: product });
 });
 
-router.post("/", async (req, res) => {
-  const { title, description, code, price, stock, category } = req.body;
+router.post("/api/products", (req, res) => {
+    const {title, description, code, price, status, stock, category, thumbnails} = req.body;
+    const newProduct = { title, description, code, price, status, stock, category, thumbnails };
+    const createdProduct = productManager.createProduct(newProduct);
 
-  try {
-    await PM.addProduct({
-      title,
-      description,
-      code,
-      price,
-      status: true,
-      stock,
+    res.status(201).redirect("http://localhost:8080/public");
+});
+
+router.get("/api/products/:id", (req, res) => {
+    const { id } = req.params;
+    const product =  productManager.getProductById(Number(id));
+
+    if (!product){
+            return res.status(404).redirect({"error": "No se encontro ningun producto con ese id"});
+    }
+
+    res.status(200).send({ data: product });
     });
-  } catch (error) {
-    console.error(error);
-    res.status(400).send({ status: "error", error: "ha ocurrido un error" });
-  }
-  res.send({ status: "success", message: "producto agregado" });
-});
 
-router.put("/:productId", async (req, res) => {
-  const productId = +req.params.productId;
-  const productData = req.body;
+    router.put("/api/products/:id", (req, res) => {
+        const { id } = req.params;
+        const {title, description, code, price, status, stock, category, thumbnails} = req.body;
+        const updatedProduct = { title, description, code, price, status, stock, category, thumbnails };
+        const modifiedProduct = productManager.updateProduct(Number(id), updatedProduct);
 
-  try {
-    await PM.updateProduct(productId, productData);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send({ status: "error", error: "ha ocurrido un error" });
-  }
+        if (!modifiedProduct) {
+            return res.status(404).send({ error: "No se encontró ningún producto con ese id" });
+        }
 
-  res.send({ status: "success", message: "producto editado" });
-});
+            res.status(200).send({ data: modifiedProduct });
 
-router.delete("/:productId", async (req, res) => {
-  const productId = +req.params.productId;
+        });
 
-  try {
-    await PM.deleteProduct(productId);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send({ status: "error", error: "ha ocurrido un error" });
-  }
+    router.delete("/api/products/:id", (req, res) => {
+        const { id } = req.params;
+        const deletedProduct = productManager.deleteProduct(Number(id));
 
-  res.send({ status: "success", message: "producto eliminado" + productId });
-});
+        if (!deletedProduct) {
+            return res.status(404).send({ error: "No se encontró ningún producto con ese id" });
+    }
+
+    res.status(200).send({ data: "Producto eliminado" });
+
+    });
 
 export default router;

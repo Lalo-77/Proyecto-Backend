@@ -1,8 +1,7 @@
-const fs = require("fs");
 
 class ProductManager {
     constructor() {
-        this.products = [];
+        this.products = " products.json";
         this.codeId = 0;
     }
     // agrega un producto

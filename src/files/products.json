@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "id": "1",
         "title": "La fortaleza",
         "description": "calorias:150,carbohidratos:60,fibras:30,grasasSaturadas:0,",
         "code": 1,
@@ -11,7 +11,7 @@
         "thumbnails": "./assets/img/brooke.jpg"
     },
     {
-        "id": 2,
+        "id": "2",
         "title": "Especial",
         "description": " calorias:150,carbohidratos:30,fibras:40,grasasSaturadas:0,",
         "code": 2,
