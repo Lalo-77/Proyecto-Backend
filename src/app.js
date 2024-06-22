@@ -1,31 +1,33 @@
 import express from "express";
-import paths from "./utils/paths.js";
 //import productsRouter from "./routes/products.router.js";
 //import products from "./routes/products.js";
 //import cartsRouter from "./routes/carts.router.js";
-import handlebars from "express-handlebars";
+import configHandlebars from "./config/handlebars.config.js"
 import appSocketIO from "./config/socket.config.js";
-import homeRouter from "./routes/home.router.js"
+import chatRouter from "./routes/chat.router.js"
+import paths from "./utils/paths.js"
 
 // configuraciones
 const PORT = 8080;
 const HOST = "localhost";
 const app = express();
 
-app.use(express.urlencoded({ extended: true}));
+// Configuracion del motor de plantillas
+configHandlebars.config(app);
 
+app.use(express.urlencoded({ extended: true}));
+// Declaracion de ruta estatica: http://localhost:8080/api/public
 app.use("/api/public", express.static(paths.public));
 
-// configuracion de handlebars
-app.engine("handlebars", handlebars.engine());
-app.set("views", paths.views);
-app.set("view engine", "handlebars");
 //app.use("/api", productsRouter);
 //app.use("/api/products", products);
 //app.use("/api/carts", cartsRouter);
-app.use("/home", homeRouter);
+
+// Definicion de enrutadores
+app.use("/chat", chatRouter);
 
 // comenzando el servidor
+// Metodos oyentes de solicitudes
 const appHTTP = app.listen(PORT, () => {
     console.log(`Ejecutandose en http://${HOST}:${PORT}`);
 });

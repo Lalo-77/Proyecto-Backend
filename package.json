@@ -5,8 +5,15 @@
     "main": "src/app.js",
     "type": "module",
     "scripts": {
-        "start": "node --watch --no-warnings src/app.js",
+        "start": "node src/app.js",
+        "dev": "node --watch --no-warnings ./src/app.js",
         "stop-windows": "task / F / IM node.exe"
+    },
+    "engines": {
+        "node": "16.x"
+    },
+    "repository": {
+        "url": "https://github.com/Lalo-77/Proyecto-Backend.git"
     },
     "keywords": [],
     "author": "Cristian Nuñez",
@@ -15,6 +22,7 @@
         "express": "^4.19.2",
         "express-handlebars": "^7.1.2",
         "node": "^20.14.0",
-        "socket.io": "^4.7.5"
+        "socket.io": "^4.7.5",
+        "sweetalert2": "^11.12.0"
     }
 }
