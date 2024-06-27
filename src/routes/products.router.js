@@ -1,45 +1,35 @@
 import { Router } from "express";
-import ProductManager from "../managers/ProductsManager";
 
 const router = Router();
-/*
-router.get("/", (req, res) => {
-    res.send({ title: "Hola" });
-});*/
-
-
-const productManager = new ProductManager();
+const products = [
+    { "id": "1", title: "La fortaleza", description: "calorias:150,carbohidratos:60,fibras:30,grasasSaturadas:0,", code: 1, price: 2000, status: true, stock: 10, category: "breack", thumbnails: "./assets/img/brooke.jpg"
+},
+   {   id: 2, title: "Especial", description: " calorias:150,carbohidratos:30,fibras:40,grasasSaturadas:0", code: 2, price: 2300, status: true, stock: 20, category: "entrada", thumbnails: "./assets/img/Especial.jpg"
+},
+   {   id: 3, title: "Rubi", code: 3, price: 2500, status: true, stock: 15, category: "plato principal", thumbnails: "./assets/img/Rubi.jpg"
+},
+];
 
 router.get("/", (req, res) => { // endpoint
-    const products = productManager.getAllProducts();
-    res.status(200).send({ data: products});
+    res.status(200).send({ products });
 });
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const product = await productManager.getProductById(Number(id));
-
-  if (!product) {
-    return res.status(404).send({ error: "No se encontro ningun producto con ese id" });
-  }
-  res.status(200).send({ data: product });
-});
-
-router.post("/api/products", (req, res) => {
-    const {title, description, code, price, status, stock, category, thumbnails} = req.body;
-    const newProduct = { title, description, code, price, status, stock, category, thumbnails };
-    const createdProduct = productManager.createProduct(newProduct);
-
-    res.status(201).redirect("http://localhost:8080/public");
-});
-
-router.get("/api/products/:id", (req, res) => {
+router.get("/:id", (req, res) => {
     const { id } = req.params;
-    const product =  productManager.getProductById(Number(id));
+    const product =  products.find((product) => product.id === Number(id));
 
     if (!product){
             return res.status(404).redirect({"error": "No se encontro ningun producto con ese id"});
     }
+
+router.post("/", (req, res) => {
+    const { id, title, description, code, price, status, stock, category, thumbnails } = req.body;
+    if (!id || !title || !description || !code || !price || !status || !stock || !category || !thumbnails){
+        return res.status(400).send({"error": "Faltan datos"});
+    }
+
+    res.status(201).redirect("http://localhost:8080/public");
+});
 
     res.status(200).send({ data: product });
     });

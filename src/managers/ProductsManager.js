@@ -1,7 +1,7 @@
 
 class ProductManager {
     constructor() {
-        this.products = " products.json";
+        this.products = "../files/products.json ";
         this.codeId = 0;
     }
     // agrega un producto
