@@ -2,6 +2,7 @@ import { Router } from "express";
 import products from "../files/products.json";
 
 const router = Router();
+const cartManager= new cartManager();
 const carts = [];
 
 router.get("/", (req, res) => { // endpoint
@@ -20,9 +21,14 @@ router.get("/:id", (req, res) => {
 
   router.post("/", (req, res) => {// agregar
     const{ id, id_product, title, description, code, price, status, sctock, category, thumbnails, amount } = req.body;
-    const item ={ id, id_product, title, description, code, price, status, sctock, category, thumbnails, amount };
-    const cart = carts.find((cart) => cart.id === Number(item.id)) ?? [];
-    cart.push({ item });
+    const product ={ id, id_product, title, description, code, price, status, sctock, category, thumbnails, amount };
+    let cart = carts.find((cart) => cart.id === Number(item.id));
+
+    if (cart) {
+       cart.products.push(product);
+    } else {
+       cart = { id, product: [product] };
+    }
 
     res.send({ status:true, cart });
 });

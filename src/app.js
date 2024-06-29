@@ -5,12 +5,12 @@ import chatRouter from "./routes/chat.router.js"
 import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/cart.router.js";
 import appSocketIO from "./config/socket.config.js";
-
+import products from "./files/products.json";
 
 // configuraciones
 const PORT = 8080;
 const HOST = "localhost";
-const app = express();
+const app = (express.json());
 const fs = require("fs");
 const productsData = fs.readFileSync("products.json", "utf8");
 const products = JSON.parse(productsData);
