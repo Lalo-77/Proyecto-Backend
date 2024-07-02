@@ -1,10 +1,11 @@
+import FileSystem from "../utils/FileSystem.js";
 export default class CartManager {
     #filename;
     #fileSystem;
     #carts;
 
     constructor () {
-        this.#filename = "cart.json";
+        this.#filename = "carts.json";
         this.#fileSystem = new FileSystem(this.#filename);
         this.#carts = this.readAll();
     }

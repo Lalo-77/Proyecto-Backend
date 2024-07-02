@@ -1,5 +1,6 @@
-import path from "./path";
+import path from "path";
 import paths from "./paths.js";
+import fs from "fs";
 
 class FileSystem {
     #filepath;
@@ -8,13 +9,13 @@ class FileSystem {
     this.#filepath = path.join(paths.files, filename);
     }
 
-    read = async () => {
-        const content = await fstat.promises.readFile(this.#filepath, "utf8");
+    read = () => {
+        const content = fs.readFileSync(this.#filepath, "utf8");
         return JSON.parse(content);
     };
     write = async (content) => {
         const contentJSON = JSON.stringify(content, null, "\t");
-        return await fstat.promises.writeFile(this.#filepath, contentJSON);
+        return await fs.writeFileSync(this.#filepath, contentJSON);
     };
 }
 

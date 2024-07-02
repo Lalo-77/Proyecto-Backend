@@ -1,17 +1,12 @@
 import { Router } from "express";
+import ProductManager from "../managers/ProductsManager.js";
 
 const router = Router();
-const products = [
-    { "id": "1", title: "La fortaleza", description: "calorias:150,carbohidratos:60,fibras:30,grasasSaturadas:0,", code: 1, price: 2000, status: true, stock: 10, category: "breack", thumbnails: "./assets/img/brooke.jpg"
-},
-   {   id: 2, title: "Especial", description: " calorias:150,carbohidratos:30,fibras:40,grasasSaturadas:0", code: 2, price: 2300, status: true, stock: 20, category: "entrada", thumbnails: "./assets/img/Especial.jpg"
-},
-   {   id: 3, title: "Rubi", code: 3, price: 2500, status: true, stock: 15, category: "plato principal", thumbnails: "./assets/img/Rubi.jpg"
-},
-];
+const products = new ProductManager();
 
 router.get("/", (req, res) => { // endpoint
-    res.status(200).send({ products });
+    const prod = products.getProducts();
+    res.status(200).send({ prod });
 });
 
 router.get("/:id", (req, res) => {

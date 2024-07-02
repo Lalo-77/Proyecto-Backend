@@ -1,8 +1,9 @@
 import { Router } from "express";
-import products from "../files/products.json";
+import CartManager from "../managers/CartManager.js";
+//import products from "../files/products.json";
 
 const router = Router();
-const cartManager= new cartManager();
+const cartManager= new CartManager();
 const carts = [];
 
 router.get("/", (req, res) => { // endpoint

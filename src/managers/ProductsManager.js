@@ -1,7 +1,10 @@
+import FileSystem from "../utils/FileSystem.js";
 
 class ProductManager {
     constructor() {
-        this.products = "../files/products.json ";
+        this.filename = "products.json";
+        this.fileSystem = new FileSystem(this.filename);
+        this.products = this.fileSystem.read();
         this.codeId = 0;
     }
     // agrega un producto
@@ -25,16 +28,9 @@ class ProductManager {
 
         this.products.push(newProduct);
     }
-
-    getProducts = async (id, title, description, price, thumbnail, code, stock) => {
-
-        const nuevoProducto = {id, title, description, price, thumbnail, code, stock};
-
-        const product = this.addProduct() ?? [];
-        products.push(nuevoProducto);
-
-        await this.crearProducto(product);
-    }
+    getProducts ( ){
+        return this.products
+    };
     // obtener producto  por Id
     getProductById(id) {
         const product = this.products.find(product => product.id === id);
